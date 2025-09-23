@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky",
-    "lint": "eslint \"src/**/*.ts\" --fix",
-    "lint:check": "eslint \"src/**/*.ts\"",
+    "postinstall": "npx playwright install",
+    "lint": "npx eslint . --color --fix --quiet",
+    "lint:check": "npx eslint . --color",
     "type-check": "tsc --noEmit",
-    "quality:check": "npm run lint:check && npm run type-check"
+    "quality:check": "npm run lint:check && npm run type-check",
+    "test": "npx playwright test -c playwright.config.ts --project=chromium"
   },
   "keywords": [],
   "author": "Yevhen Petryk",

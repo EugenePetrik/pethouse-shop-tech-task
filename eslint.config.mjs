@@ -2,7 +2,6 @@ import pluginJs from '@eslint/js';
 import googleConfig from 'eslint-config-google';
 import stylistic from '@stylistic/eslint-plugin';
 import playwright from 'eslint-plugin-playwright';
-import checkFile from 'eslint-plugin-check-file';
 import tseslint from 'typescript-eslint';
 
 /** @type {import('eslint').Linter.Config[]} */
@@ -26,7 +25,6 @@ export default [
     files: ['**/*.{js,mjs,cjs,ts}'],
     plugins: {
       '@stylistic': stylistic,
-      'check-file': checkFile,
       '@typescript-eslint': tseslint.plugin,
     },
     rules: {

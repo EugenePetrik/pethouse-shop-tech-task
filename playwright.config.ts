@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { baseConfig } from './config/baseConfig';
 
 export default defineConfig({
   testDir: './tests',
@@ -8,7 +9,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: baseConfig.WEB_URL,
     trace: 'on-first-retry',
   },
   projects: [
@@ -16,12 +17,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },

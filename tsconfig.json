@@ -3,9 +3,6 @@
     "module": "nodenext",
     "target": "esnext",
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "resolveJsonModule": true,
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
