@@ -3,14 +3,42 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prepare": "husky",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "lint:check": "eslint \"src/**/*.ts\"",
+    "type-check": "tsc --noEmit",
+    "quality:check": "npm run lint:check && npm run type-check"
+  },
   "keywords": [],
   "author": "Yevhen Petryk",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@eslint/js": "^9.36.0",
     "@playwright/test": "^1.55.1",
+    "@stylistic/eslint-plugin": "^5.4.0",
     "@types/node": "^24.5.2",
-    "typescript": "^5.9.2"
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "eslint": "^9.36.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-playwright": "^2.2.2",
+    "husky": "^9.1.7",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.(ts)": [
+      "npm run quality:check"
+    ]
   }
 }
