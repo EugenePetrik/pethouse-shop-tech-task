@@ -15,7 +15,7 @@ export class FiltersComponent extends AppComponent {
 
   @step('Select brand on the Product page')
   public async selectBrand(brandName: Brands): Promise<void> {
-    const brandItem = this.brandItems.filter({ hasText: brandName }).first();
+    const brandItem = this.brandItems.filter({ hasText: brandName }).locator('label');
     await brandItem.click();
   }
 }
