@@ -2,7 +2,6 @@
   "compilerOptions": {
     "module": "nodenext",
     "target": "esnext",
-    "baseUrl": "./",
     "resolveJsonModule": true,
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
