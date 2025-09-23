@@ -1,5 +1,5 @@
 import { test as base, expect } from '@playwright/test';
-import { Application } from '..';
+import { Application } from '../pages';
 
 export const test = base.extend<{ app: Application }>({
   app: async ({ browser, page }, use) => {

@@ -1,4 +1,4 @@
-import { step } from '../config/reporters/step';
+import { step } from '../../config/reporters/step';
 import { AppComponent } from './AppComponent';
 
 export abstract class AppPage extends AppComponent {

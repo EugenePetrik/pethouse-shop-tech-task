@@ -1,4 +1,5 @@
-import { AppComponent } from '../../../AppComponent';
+import { step } from '../../../../config/reporters/step';
+import { AppComponent } from '../../AppComponent';
 
 export enum Brands {
   PET_STAGES = 'Petstages',
@@ -12,6 +13,7 @@ export class FiltersComponent extends AppComponent {
   readonly brandsContainer = this.page.locator('.brands-container');
   readonly brandItems = this.brandsContainer.locator('.brand-item');
 
+  @step('Select brand on the Product page')
   public async selectBrand(brandName: Brands): Promise<void> {
     const brandItem = this.brandItems.filter({ hasText: brandName }).first();
     await brandItem.click();
