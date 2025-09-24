@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test';
 import type { ApiResponse, PriceItem, Product } from '../../types/products';
-import { formatPrice, parsePrice } from './price.utils';
+import { calculateDiscountedPrice, formatPrice, parsePrice } from './price.utils';
 
 export class ApiHelper {
   static async setupApiInterception(page: Page): Promise<()=> number[]> {
@@ -65,7 +65,7 @@ export class ApiHelper {
     });
 
     const originalPrice: number = Math.min(...allPrices);
-    const discountedPrice: number = Math.round(originalPrice * 0.05);
+    const discountedPrice: number = calculateDiscountedPrice(originalPrice);
 
     return {
       ...product,
@@ -73,7 +73,7 @@ export class ApiHelper {
       'special-offer-faso-text': '-95%',
       'prices': product.prices.map((priceItem: PriceItem) => {
         const originalPrice: number = parsePrice(priceItem.price);
-        const variantDiscountedPrice: number = Math.round(originalPrice * 0.05);
+        const variantDiscountedPrice: number = calculateDiscountedPrice(originalPrice);
 
         return {
           ...priceItem,
