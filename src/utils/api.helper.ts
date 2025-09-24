@@ -3,10 +3,13 @@ import type { ApiResponse, PriceItem, Product } from '../../types/products';
 import { calculateDiscountedPrice, formatPrice, parsePrice } from './price.utils';
 
 export class ApiHelper {
-  static async setupApiInterception(page: Page): Promise<()=> number[]> {
+  static async setupApiInterception(
+      route: string,
+      page: Page,
+  ): Promise<()=> number[]> {
     let originalPrices: number[] = [];
 
-    await page.route('**/shop/koshkam/*/*.json*', async (route) => {
+    await page.route(route, async (route) => {
       const response = await route.fetch();
       const originalData: ApiResponse = await response.json();
 
