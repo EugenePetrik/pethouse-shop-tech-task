@@ -1,6 +1,6 @@
 import { PageHolder } from './PageHolder';
-import { ProductPage } from './product/ProductPage';
+import { ShopPage } from './shop/ShopPage';
 
 export class Application extends PageHolder {
-  readonly product: ProductPage = new ProductPage(this.page);
+  readonly product: ShopPage = new ShopPage(this.page);
 }

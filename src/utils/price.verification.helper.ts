@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { parsePrice } from './price.utils';
 
 export class PriceVerificationHelper {
   static async verifyProductPrice(
@@ -13,14 +14,8 @@ export class PriceVerificationHelper {
     const displayedUAHPriceText = await priceUAHElement.textContent();
     const displayedCentsPriceText = await priceCentsElement.textContent();
 
-    const displayedUAHPrice = this.parsePrice(displayedUAHPriceText);
-    const displayedCentsPrice = this.parsePrice(displayedCentsPriceText);
-
-    // Check for NaN values
-    if (isNaN(displayedUAHPrice) || isNaN(displayedCentsPrice)) {
-      console.error(`Product ${productIndex + 1}: Invalid price parsing - UAH: ${displayedUAHPrice}, Kopecks: ${displayedCentsPrice}`);
-      return;
-    }
+    const displayedUAHPrice = parsePrice(displayedUAHPriceText);
+    const displayedCentsPrice = parsePrice(displayedCentsPriceText);
 
     // Combine UAH and kopecks into total price
     const totalDisplayedPrice = displayedUAHPrice + (displayedCentsPrice / 100);
@@ -45,14 +40,8 @@ export class PriceVerificationHelper {
       const labelText = await allDiscountLabels.nth(i).textContent();
 
       if (labelText?.includes('%')) {
-        expect(labelText).toContain('95%');
+        expect(labelText).toContain('-95%');
       }
     }
-  }
-
-  private static parsePrice(priceText: string | null): number {
-    return priceText
-      ? parseFloat(priceText.replace(/[^\d.,]/g, '').replace(',', '.'))
-      : 0;
   }
 }

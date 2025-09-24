@@ -1,7 +1,8 @@
 import { expect, test } from '../../fixtures';
-import { Brands } from '../../pages/product/components/FiltersComponent';
-import { ApiHelper } from '../../utils/ApiHelper';
-import { PriceVerificationHelper } from '../../utils/PriceVerificationHelper';
+import { Brands } from '../../pages/shop/components/FiltersComponent';
+import { ApiHelper } from '../../utils/api.helper';
+import { calculateDiscountedPrice } from '../../utils/price.utils';
+import { PriceVerificationHelper } from '../../utils/price.verification.helper';
 
 test('should apply final price correctly', async ({ app, page }) => {
   // Set up API interception and get original prices
@@ -11,13 +12,17 @@ test('should apply final price correctly', async ({ app, page }) => {
 
   await app.product.filters.selectBrand(Brands.BARKSI);
 
-  await expect(page).toHaveURL(/.*\/shop\/koshkam\/igrushki\/barksi\//);
+  await expect(
+      page,
+      'URL is not correct after applying brand filter',
+  ).toHaveURL(/.*\/shop\/koshkam\/igrushki\/barksi\//);
 
-  // Verify that exactly 3 products are displayed
-  await expect(app.product.productCards).toHaveCount(3);
+  await expect(
+      app.product.productCards,
+      'Product cards count is not correct',
+  ).toHaveCount(3);
 
-  // Get the original prices after the API call has been made
-  const originalPrices = getOriginalPrices();
+  const pricesFromApiRequest = getOriginalPrices();
 
   // Verify discount labels and price calculations for each product
   for (let i = 0; i < 3; i++) {
@@ -27,7 +32,7 @@ test('should apply final price correctly', async ({ app, page }) => {
     await PriceVerificationHelper.verifyDiscountLabel(productCard);
 
     // Calculate expected price and verify
-    const expectedPrice = Math.round(originalPrices[i] * 0.05);
+    const expectedPrice = calculateDiscountedPrice(pricesFromApiRequest[i]);
     await PriceVerificationHelper.verifyProductPrice(productCard, expectedPrice, i);
   }
 

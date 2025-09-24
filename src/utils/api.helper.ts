@@ -1,11 +1,12 @@
 import { type Page } from '@playwright/test';
 import type { ApiResponse, PriceItem, Product } from '../../types/products';
+import { formatPrice, parsePrice } from './price.utils';
 
 export class ApiHelper {
   static async setupApiInterception(page: Page): Promise<()=> number[]> {
     let originalPrices: number[] = [];
 
-    await page.route('**/shop/koshkam/igrushki/*.json*', async (route) => {
+    await page.route('**/shop/koshkam/*/*.json*', async (route) => {
       const response = await route.fetch();
       const originalData: ApiResponse = await response.json();
 
@@ -32,14 +33,14 @@ export class ApiHelper {
     return goods
         .slice(0, 3)
         .map((product) => {
-          // Get the MINIMUM price from all price variants
           if (product.prices && product.prices.length > 0) {
             const prices = product.prices.map((priceItem) => {
-              return parseFloat(priceItem.price.replace(',', '.'));
+              return parsePrice(priceItem.price);
             });
             return Math.min(...prices);
           }
-          return parseFloat(product['min-price'].replace(',', '.'));
+
+          return parsePrice(product['min-price']);
         });
   }
 
@@ -60,22 +61,23 @@ export class ApiHelper {
 
   private static applyDiscountToProduct(product: Product): Product {
     const allPrices: number[] = product.prices.map((priceItem: PriceItem) => {
-      return parseFloat(priceItem.price.replace(',', '.'));
+      return parsePrice(priceItem.price);
     });
+
     const originalPrice: number = Math.min(...allPrices);
     const discountedPrice: number = Math.round(originalPrice * 0.05);
 
     return {
       ...product,
-      'min-price': discountedPrice.toFixed(2).replace('.', ','),
+      'min-price': formatPrice(discountedPrice),
       'special-offer-faso-text': '-95%',
       'prices': product.prices.map((priceItem: PriceItem) => {
-        const originalPrice: number = parseFloat(priceItem.price.replace(',', '.'));
+        const originalPrice: number = parsePrice(priceItem.price);
         const variantDiscountedPrice: number = Math.round(originalPrice * 0.05);
 
         return {
           ...priceItem,
-          'price': variantDiscountedPrice.toFixed(2).replace('.', ','),
+          'price': formatPrice(variantDiscountedPrice),
           'discount': '95',
           'action-text': '-95%',
           'price-wd': priceItem.price,
