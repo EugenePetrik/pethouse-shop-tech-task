@@ -10,7 +10,8 @@
     "lint:check": "npx eslint . --color",
     "type-check": "tsc --noEmit",
     "quality:check": "npm run lint:check && npm run type-check",
-    "test": "npx playwright test -c playwright.config.ts --project=chromium"
+    "test": "npx playwright test -c playwright.config.ts --project=chromium",
+    "report": "npx playwright show-report"
   },
   "keywords": [],
   "author": "Yevhen Petryk",
