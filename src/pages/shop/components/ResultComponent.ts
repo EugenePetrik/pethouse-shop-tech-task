@@ -13,12 +13,14 @@ export class Result extends AppComponent {
     super(root.page());
   }
 
-  async specialOfferDiscountLabel(): Promise<string | null> {
-    return this.root.locator(this.specialOfferDiscountLabelSelector).first().textContent();
+  async specialOfferDiscountLabel(): Promise<string> {
+    const element = this.root.locator(this.specialOfferDiscountLabelSelector).first();
+    return element.textContent() as Promise<string>;
   }
 
-  async priceDiscountLabel(): Promise<string | null> {
-    return this.root.locator(this.priceDiscountLabelSelector).first().textContent();
+  async priceDiscountLabel(): Promise<string> {
+    const element = this.root.locator(this.priceDiscountLabelSelector).first();
+    return element.textContent() as Promise<string>;
   }
 
   async discountedPrice(): Promise<number> {
@@ -36,7 +38,11 @@ export class Result extends AppComponent {
   }
 
   @step()
-  async resultDetails() {
+  async resultDetails(): Promise<{
+      specialOfferDiscountLabel: string,
+      priceDiscountLabel: string,
+      discountedPrice: number,
+  }> {
     return {
       specialOfferDiscountLabel: await this.specialOfferDiscountLabel(),
       priceDiscountLabel: await this.priceDiscountLabel(),
