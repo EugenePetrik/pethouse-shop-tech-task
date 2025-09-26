@@ -16,13 +16,13 @@ export class ResultsComponent extends AppComponent {
   @step()
   async verifyDiscountLabelsAndPrices(data: {
     prices: number[],
-    numberOfProducts: number,
-    discountPercentage: number,
+    productsCount: number,
+    discountPercent: number,
     discountLabel: string,
   }): Promise<void> {
-    const { prices, numberOfProducts, discountPercentage, discountLabel } = data;
+    const { prices, productsCount, discountPercent, discountLabel } = data;
 
-    for (let index = 0; index < numberOfProducts; index++) {
+    for (let index = 0; index < productsCount; index++) {
       const productCard = await this.getResultDetailsByIndex(index);
 
       expect(
@@ -35,7 +35,7 @@ export class ResultsComponent extends AppComponent {
           `Discount label is not correct for product ${index + 1}`,
       ).toEqual(discountLabel);
 
-      const expectedDiscountedPrice = calculateDiscountedPrice(prices[index], discountPercentage);
+      const expectedDiscountedPrice = calculateDiscountedPrice(prices[index], discountPercent);
       expect(
           productCard.discountedPrice,
           `Discounted price is not correct for product ${index + 1}`,
